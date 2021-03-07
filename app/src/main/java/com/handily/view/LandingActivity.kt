@@ -1,0 +1,66 @@
+package com.handily.view
+
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.handily.R
+import com.handily.databinding.ActivityLandingBinding
+import com.handily.viewmodel.HandilyViewModel
+
+private const val PERMISSION_FINE_LOCATION = 2137
+
+class LandingActivity : AppCompatActivity() {
+
+    private val viewModel: HandilyViewModel by viewModels()
+
+    private lateinit var binding: ActivityLandingBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityLandingBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        val navController = Navigation.findNavController(this, R.id.navigation_fragment)
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
+
+        observeViewModel()
+
+        viewModel.setUser(Firebase.auth.currentUser?.uid.toString()) {
+            when {
+                Firebase.auth.currentUser == null -> {
+                    val intent = Intent(this, SignInActivity::class.java)
+                    startActivity(intent)
+                }
+                viewModel.authenticatedUser.value == null -> {
+                    val intent = Intent(this, UserDetailsActivity::class.java)
+                    startActivity(intent)
+                }
+                else -> {
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                    findViewById<View>(R.id.navigation_fragment).visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.authenticatedUser.observeForever {
+            it?.let { binding.user = it }
+        }
+    }
+}

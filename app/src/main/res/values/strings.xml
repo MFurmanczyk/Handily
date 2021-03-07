@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Handily</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="privacy_policy">I accept privacy policy.</string>
+    <string name="save">Save</string>
+    <string name="given_name">Given name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="family_name">Family name</string>
+    <string name="country_code">Code</string>
+    <string name="user_details_rationale">Please provide us some of your personal details in order to finish registration process. We will use them to display your name and make your profile more reliable.</string>
+    <string name="sign_out">Sign out</string>
+    <string name="navigation_home">Home</string>
+    <string name="navigation_profile">Profile</string>
+    <string name="navigation_fixes">Fixes</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="fix_details">Fix details</string>
+    <string name="post">Post</string>
+    <string name="next">Next</string>
+</resources>

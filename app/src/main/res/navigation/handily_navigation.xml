@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/handily_navigation"
+    app:startDestination="@id/home_fragment">
+
+    <fragment
+        android:id="@+id/home_fragment"
+        android:name="com.handily.view.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/fixes_fragment"
+        android:name="com.handily.view.FixesFragment"
+        android:label="fragment_fixes"
+        tools:layout="@layout/fragment_fixes" >
+        <action
+            android:id="@+id/action_fixes_fragment_to_fixDetailsFragment"
+            app:destination="@id/fixDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/user_details_fragment"
+        android:name="com.handily.view.UserDetailsFragment"
+        android:label="UserDetailsFragment" />
+    <fragment
+        android:id="@+id/fixDetailsFragment"
+        android:name="com.handily.view.FixDetailsFragment"
+        android:label="fragment_fix_details"
+        tools:layout="@layout/fragment_fix_details" >
+        <action
+            android:id="@+id/action_fixDetailsFragment_to_home_fragment"
+            app:destination="@id/home_fragment" />
+        <argument
+            android:name="Coordinates"
+            app:argType="com.google.android.gms.maps.model.LatLng" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.handily.view.MapsFragment"
+        android:label="MapsFragment" />
+</navigation>
