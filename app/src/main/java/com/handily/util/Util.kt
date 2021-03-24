@@ -6,8 +6,13 @@ import androidx.databinding.BindingAdapter
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.maps.model.LatLng
 import com.handily.R
 
+
+enum class Cities(val location: LatLng){
+     WARSAW(LatLng(52.237049, 21.017532))
+}
 
 fun getProgressDrawable(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {

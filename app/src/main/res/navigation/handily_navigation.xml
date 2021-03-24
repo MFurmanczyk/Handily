@@ -31,9 +31,6 @@
         <action
             android:id="@+id/action_fixDetailsFragment_to_home_fragment"
             app:destination="@id/home_fragment" />
-        <argument
-            android:name="Coordinates"
-            app:argType="com.google.android.gms.maps.model.LatLng" />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"

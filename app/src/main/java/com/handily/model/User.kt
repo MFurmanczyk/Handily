@@ -1,5 +1,8 @@
 package com.handily.model
 
+import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.PropertyName
+
 /**
  * User class represents system users. It is constructed with builder
  * pattern to allow possibility of different optional parameters

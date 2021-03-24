@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -57,6 +58,58 @@ class LandingActivity : AppCompatActivity() {
 
         }
     }
+
+    fun checkLocationPermission() {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                AlertDialog.Builder(this)
+                    .setTitle("Location access")
+                    .setMessage("This application needs access to Device location.")
+                    .setPositiveButton("OK") { _, _ ->
+                        requestLocationPermission()
+                    }
+                    .setNegativeButton("Cancel") {_, _ ->
+                        notifyFragment(false)
+                    }
+                    .show()
+            } else {
+                requestLocationPermission()
+            }
+        } else {
+            notifyFragment(true)
+        }
+    }
+
+
+    private fun notifyFragment(permissionGranted: Boolean) {
+        val fragment = supportFragmentManager.findFragmentById(R.id.navigation_fragment)
+        val activeFragment = fragment?.childFragmentManager?.primaryNavigationFragment
+        if(activeFragment is FixesFragment) {
+            activeFragment.onPermissionResult(permissionGranted)
+        }
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSION_FINE_LOCATION)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode) {
+            PERMISSION_FINE_LOCATION -> {
+                if(permissions.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    notifyFragment(true)
+                } else {
+                    notifyFragment(false)
+                }
+            }
+        }
+    }
+
 
     private fun observeViewModel() {
         viewModel.authenticatedUser.observeForever {

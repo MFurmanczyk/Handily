@@ -16,14 +16,12 @@ class UserDetailsViewModel(application: Application): AndroidViewModel(applicati
     val authenticatedUser: LiveData<User>
         get() = _authenticatedUser
 
-    private var firestoreProvider = FirestoreProvider.instance
-
     fun setUser(uuid: String, isFirstLogin: Boolean) {
         if(isFirstLogin) {
             val user = User.Builder(uuid, Firebase.auth.currentUser?.email.toString()).build()
             _authenticatedUser.postValue(user)
         } else {
-            firestoreProvider.getUser(uuid) {
+            FirestoreProvider.instance.getUser(uuid) {
                 it?.let { _authenticatedUser.postValue(it) }
             }
         }
@@ -36,9 +34,9 @@ class UserDetailsViewModel(application: Application): AndroidViewModel(applicati
 
     fun saveUser(user: User, isFresh: Boolean) {
         if(isFresh) {
-            firestoreProvider.addUser(user)
+            FirestoreProvider.instance.addUser(user)
         } else {
-            firestoreProvider.updateUser(user)
+            FirestoreProvider.instance.updateUser(user)
         }
 
         _authenticatedUser.postValue(user)

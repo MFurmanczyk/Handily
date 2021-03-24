@@ -49,7 +49,6 @@ class UserDetailsFragment : Fragment() {
 
         binding.detailsTopAppBar.setOnMenuItemClickListener {
 
-            //TODO: Handling fragment menu in other activities
             when (it?.itemId) {
                 R.id.user_details_save -> {
                     if (!binding.userDetailsGivenName.editText?.text.isNullOrEmpty() &&

@@ -6,6 +6,8 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.handily.model.FixRequest
+import com.handily.model.FixRequestContract
 import com.handily.model.User
 import com.handily.model.UsersContract
 import kotlin.system.exitProcess
@@ -36,7 +38,7 @@ class FirestoreProvider private constructor(){
             if(it.isSuccessful) {
                 user = it.result?.toObject<User>()
             } else {
-                Log.w(TAG, "Listen failed.", it.exception?.cause)
+                Log.w(TAG, "getUser() failed.", it.exception?.cause)
             }
             callback(user)
 
@@ -80,12 +82,16 @@ class FirestoreProvider private constructor(){
         }
     }
 
+    fun addFixRequest(fixRequest: FixRequest) {
+        db.collection(FixRequestContract.COLLECTION_NAME).add(fixRequest)
+    }
+
     //Singleton pattern handling
     private object SingletonHolder {
         val instance = FirestoreProvider()
     }
 
     companion object {
-        val instance: FirestoreProvider by lazy {SingletonHolder.instance}
+        val instance: FirestoreProvider by lazy { SingletonHolder.instance }
     }
 }
