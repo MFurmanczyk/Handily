@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "741398714761",
+    "project_id": "handily-77f76",
+    "storage_bucket": "handily-77f76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741398714761:android:943b99c1abf1b88351e958",
+        "android_client_info": {
+          "package_name": "com.handily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741398714761-5lb0ql5r5pdb8lsqrang4qjg44dop46u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCz1Zh9UC540yE6DJGPJnsjD2Ty7cxNhuM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741398714761-5lb0ql5r5pdb8lsqrang4qjg44dop46u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
