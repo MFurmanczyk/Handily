@@ -30,6 +30,10 @@ class  HandilyViewModel(application: Application): AndroidViewModel(application)
     val userLocation: LiveData<LatLng>
         get() = _userLocation
 
+    private val _ownedFixRequests = MutableLiveData<List<FixRequest>>()
+    val ownedFixRequest: LiveData<List<FixRequest>>
+        get() = _ownedFixRequests
+
     private val locationRepository = LocationRepository(application.applicationContext)
 
     private val disposable = CompositeDisposable()
@@ -42,6 +46,12 @@ class  HandilyViewModel(application: Application): AndroidViewModel(application)
                 _authenticatedUser.value = null
             }
             callback()
+        }
+    }
+
+    fun getOwnedFixRequests(userUuid: String) {
+        FirestoreProvider.instance.getFixRequests(userUuid) {
+            _ownedFixRequests.value = it
         }
     }
 

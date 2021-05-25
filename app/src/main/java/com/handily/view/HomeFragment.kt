@@ -6,9 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.handily.R
 import com.handily.databinding.FragmentHomeBinding
+import com.handily.model.FixRequest
 import com.handily.viewmodel.HandilyViewModel
+
+private const val CARDS_IN_ROW = 2
 
 class HomeFragment : Fragment() {
 
@@ -17,6 +22,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel : HandilyViewModel by activityViewModels()
 
+    private var fixRequestsList : List<FixRequest> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +31,12 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         observeViewModel()
+
+        binding.userFixRequestsList.layoutManager = GridLayoutManager(context, CARDS_IN_ROW, RecyclerView.VERTICAL, false)
+        val adapter = FixRequestCardRecyclerViewAdapter(fixRequestsList)
+        adapter.notifyDataSetChanged()
+        binding.userFixRequestsList.adapter = adapter
+
         return binding.root
     }
 
@@ -42,7 +54,7 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
+            viewModel.getOwnedFixRequests(binding.user?.uuid.toString())
     }
 
 
@@ -51,6 +63,10 @@ class HomeFragment : Fragment() {
             it?.let {
                 binding.user = it
             }
+        }
+
+        viewModel.ownedFixRequest.observe(viewLifecycleOwner) {
+            fixRequestsList = it
         }
     }
 

@@ -41,7 +41,6 @@ class FirestoreProvider private constructor(){
                 Log.w(TAG, "getUser() failed.", it.exception?.cause)
             }
             callback(user)
-
         }
     }
 
@@ -61,6 +60,23 @@ class FirestoreProvider private constructor(){
                 } else {
                     callback(value?.toObject<User>())
                 }
+            }
+    }
+
+    fun getFixRequests(userUuid: String, callback: (List<FixRequest>?) -> Unit) {
+        db.collection(FixRequestContract.COLLECTION_NAME)
+            .whereEqualTo(FixRequestContract.Fields.USER_UUID, userUuid)
+            .get()
+            .addOnSuccessListener { documents ->
+                val fixRequests : ArrayList<FixRequest> = ArrayList()
+                for (document in documents) {
+                    fixRequests.add(document.toObject())
+                }
+                callback(fixRequests)
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "Listen failed.", it.cause)
+                callback(null)
             }
     }
 
