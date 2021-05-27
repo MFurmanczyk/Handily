@@ -70,6 +70,7 @@ class FirestoreProvider private constructor(){
             .addOnSuccessListener { documents ->
                 val fixRequests : ArrayList<FixRequest> = ArrayList()
                 for (document in documents) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
                     fixRequests.add(document.toObject())
                 }
                 callback(fixRequests)

@@ -51,7 +51,7 @@ class  HandilyViewModel(application: Application): AndroidViewModel(application)
 
     fun getOwnedFixRequests(userUuid: String) {
         FirestoreProvider.instance.getFixRequests(userUuid) {
-            _ownedFixRequests.value = it
+            _ownedFixRequests.postValue(it)
         }
     }
 
