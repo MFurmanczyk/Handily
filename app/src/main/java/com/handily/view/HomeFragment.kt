@@ -11,8 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.handily.R
 import com.handily.databinding.FragmentHomeBinding
 import com.handily.model.FixRequest
-import com.handily.model.GridItemDecoration
+import com.handily.util.GridItemDecoration
 import com.handily.viewmodel.HandilyViewModel
+import kotlin.coroutines.coroutineContext
 
 private const val CARDS_IN_ROW = 2
 
@@ -23,7 +24,9 @@ class HomeFragment : Fragment() {
 
     private val viewModel : HandilyViewModel by activityViewModels()
 
-    private var fixRequestsList : List<FixRequest> = ArrayList()
+
+    private val adapter = FixRequestCardRecyclerViewAdapter(arrayListOf())
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +36,14 @@ class HomeFragment : Fragment() {
         setHasOptionsMenu(true)
         observeViewModel()
 
+        binding.userFixRequestsList.layoutManager = GridLayoutManager(context, CARDS_IN_ROW, RecyclerView.VERTICAL, false)
+        binding.userFixRequestsList.adapter = adapter
+        binding.userFixRequestsList.addItemDecoration(GridItemDecoration(this.requireContext(), R.dimen.padding))
 
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getOwnedFixRequests(viewModel.authenticatedUser.value?.uuid.toString())
+            binding.swipeRefresh.isRefreshing = false
+        }
 
         return binding.root
     }
@@ -42,17 +52,16 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.homeTopAppBar.inflateMenu(R.menu.home_menu)
         binding.homeTopAppBar.setOnMenuItemClickListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.sign_out -> {
                     viewModel.signOut()
                     return@setOnMenuItemClickListener true
                 }
-                else ->{
+                else -> {
                     return@setOnMenuItemClickListener false
                 }
             }
         }
-
     }
 
 
@@ -63,17 +72,12 @@ class HomeFragment : Fragment() {
             }
             viewModel.authenticatedUser.value?.uuid?.let {
                 viewModel.getOwnedFixRequests(it)
+
             }
         }
 
         viewModel.ownedFixRequest.observe(viewLifecycleOwner) {
-            fixRequestsList = it
-            binding.userFixRequestsList.layoutManager = GridLayoutManager(context, CARDS_IN_ROW, RecyclerView.VERTICAL, false)
-            val adapter = FixRequestCardRecyclerViewAdapter(fixRequestsList)
-            adapter.notifyDataSetChanged()
-            binding.userFixRequestsList.adapter = adapter
-            binding.userFixRequestsList.addItemDecoration(GridItemDecoration(this.requireContext(), R.dimen.padding))
-
+            adapter.updateFixRequestList(it)
         }
     }
 

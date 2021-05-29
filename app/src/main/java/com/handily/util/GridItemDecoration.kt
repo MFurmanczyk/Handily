@@ -1,4 +1,4 @@
-package com.handily.model
+package com.handily.util
 
 import android.content.Context
 import android.graphics.Rect
