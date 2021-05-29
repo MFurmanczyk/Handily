@@ -17,18 +17,7 @@
         android:orientation="vertical"
         tools:context=".view.HomeFragment">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/home_top_app_bar"
-                style="@style/Widget.MaterialComponents.Toolbar.Surface.AppBarText"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="@{`Hello ` + User.givenName}" />
-
-        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"

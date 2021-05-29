@@ -48,21 +48,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.homeTopAppBar.inflateMenu(R.menu.home_menu)
-        binding.homeTopAppBar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.sign_out -> {
-                    viewModel.signOut()
-                    return@setOnMenuItemClickListener true
-                }
-                else -> {
-                    return@setOnMenuItemClickListener false
-                }
-            }
-        }
-    }
+
 
 
     private fun observeViewModel() {

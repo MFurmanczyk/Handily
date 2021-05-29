@@ -1,10 +1,12 @@
 package com.handily.view
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -56,6 +58,19 @@ class LandingActivity : AppCompatActivity() {
                 }
             }
 
+        }
+
+        binding.homeTopAppBar.inflateMenu(R.menu.home_menu)
+        binding.homeTopAppBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.sign_out -> {
+                    viewModel.signOut()
+                    return@setOnMenuItemClickListener true
+                }
+                else -> {
+                    return@setOnMenuItemClickListener false
+                }
+            }
         }
     }
 
