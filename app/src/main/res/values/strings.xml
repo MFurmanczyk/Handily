@@ -24,4 +24,6 @@
     <string name="post">Post</string>
     <string name="next">Next</string>
     <string name="google_maps_key">AIzaSyD0SRao5ZDLgDoWkRChACqw14npbHrIPNw</string>
+    <string name="client">Client</string>
+    <string name="worker">Worker</string>
 </resources>
