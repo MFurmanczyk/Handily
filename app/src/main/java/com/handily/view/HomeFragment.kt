@@ -10,14 +10,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.handily.R
 import com.handily.databinding.FragmentHomeBinding
-import com.handily.model.FixRequest
 import com.handily.util.GridItemDecoration
 import com.handily.viewmodel.HandilyViewModel
-import kotlin.coroutines.coroutineContext
 
 private const val CARDS_IN_ROW = 2
 
-class HomeFragment : Fragment() {
+open class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -47,9 +45,6 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
-
-
-
 
     private fun observeViewModel() {
         viewModel.authenticatedUser.observe(viewLifecycleOwner) {

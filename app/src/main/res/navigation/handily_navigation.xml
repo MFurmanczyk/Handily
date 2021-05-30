@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/handily_navigation"
-    app:startDestination="@id/home_fragment">
+    app:startDestination="@id/fragment_home_tabs">
 
     <fragment
-        android:id="@+id/home_fragment"
-        android:name="com.handily.view.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/fragment_home_tabs"
+        tools:layout="@layout/fragment_home_tabs"
+        android:label="fragment_home_tabs"
+        android:name="com.handily.view.FragmentHomeTabs"/>
     <fragment
         android:id="@+id/fixes_fragment"
         android:name="com.handily.view.FixesFragment"
@@ -30,7 +30,7 @@
         tools:layout="@layout/fragment_fix_details" >
         <action
             android:id="@+id/action_fixDetailsFragment_to_home_fragment"
-            app:destination="@id/home_fragment" />
+            app:destination="@id/fragment_home_tabs" />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
