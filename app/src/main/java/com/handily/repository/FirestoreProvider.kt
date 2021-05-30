@@ -1,15 +1,19 @@
 package com.handily.repository
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.handily.model.FixRequest
 import com.handily.model.FixRequestContract
 import com.handily.model.User
 import com.handily.model.UsersContract
+import java.io.ByteArrayOutputStream
+import java.net.URL
 import kotlin.system.exitProcess
 
 private const val TAG = "FirestoreProvider"
@@ -17,6 +21,7 @@ private const val TAG = "FirestoreProvider"
 class FirestoreProvider private constructor(){
 
     private val db = Firebase.firestore
+    private val storage = FirebaseStorage.getInstance()
 
     /**
      * Updates user with given uuid
@@ -99,8 +104,52 @@ class FirestoreProvider private constructor(){
         }
     }
 
-    fun addFixRequest(fixRequest: FixRequest) {
-        db.collection(FixRequestContract.COLLECTION_NAME).add(fixRequest)
+    fun addFixRequest(fixRequest: FixRequest, bitmaps: ArrayList<Bitmap>?, callback: () -> Unit) {
+        db.collection(FixRequestContract.COLLECTION_NAME).add(fixRequest).addOnCompleteListener {
+            if(bitmaps != null) {
+                if(bitmaps.isNotEmpty()) {
+                    val bitmapsToUpload = ArrayList(bitmaps)
+                    addPhotos(bitmapsToUpload, it.result.id)
+                    callback()
+                }
+            }
+        }
+
+    }
+
+    private fun updateFixRequest(fixRequestUuid: String?, imageUrls: ArrayList<String>) {
+        db.collection(FixRequestContract.COLLECTION_NAME).document(fixRequestUuid!!).get().addOnCompleteListener {
+            if(it.isSuccessful) {
+                db.collection(FixRequestContract.COLLECTION_NAME)
+                    .document(fixRequestUuid)
+                    .update(FixRequestContract.Fields.PICTURES, imageUrls)
+            }
+        }
+    }
+
+    fun addPhotos(bitmaps: ArrayList<Bitmap>, fixRequestUuid: String?) {
+        val imageUrls = arrayListOf<String>()
+        for(i in 0 until bitmaps.size) {
+            val storageRef = storage.reference
+            val fixImageRef = storageRef.child("${fixRequestUuid}_$i.jpg")
+            val baos = ByteArrayOutputStream()
+            bitmaps[i].compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            val uploadTask = fixImageRef.putBytes(data)
+            uploadTask.addOnCompleteListener {
+                if(it.isSuccessful) {
+                    val imageUrl = fixImageRef.downloadUrl
+                    imageUrl.addOnCompleteListener { task ->
+                        imageUrls.add(task.result.toString())
+                        if(imageUrls.size == bitmaps.size) {
+                            updateFixRequest(fixRequestUuid, imageUrls)
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     //Singleton pattern handling
