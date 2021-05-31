@@ -26,4 +26,7 @@
     <string name="google_maps_key">AIzaSyD0SRao5ZDLgDoWkRChACqw14npbHrIPNw</string>
     <string name="client">Client</string>
     <string name="worker">Worker</string>
+    <string name="radius">Radius</string>
+    <string name="_0">0</string>
+    <string name="radius_key">radius_key</string>
 </resources>
