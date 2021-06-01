@@ -28,7 +28,6 @@ class FixRequest(
             fun lat(lat: Double) = apply { this.lat = lat }
             fun lng(lng: Double) = apply { this.lng = lng }
             fun geoHash(hash: String) = apply { this.geoHash = hash }
-            fun imagesUrls(imageUrl: String) = apply { this.imagesUrls.add(imageUrl) }
             fun imagesUrls(imagesUrls: List<String>) = apply { this.imagesUrls.addAll(imagesUrls) }
             fun userUuid(uuid: String?) = apply { this.userUuid = uuid }
             fun build() = FixRequest(

@@ -2,6 +2,13 @@ package com.handily.viewmodel
 
 
 import android.app.Application
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -34,6 +41,10 @@ class  HandilyViewModel(application: Application): AndroidViewModel(application)
     val ownedFixRequest: LiveData<List<FixRequest>>
         get() = _ownedFixRequests
 
+    private val _fixRequestPhotos = MutableLiveData<ArrayList<Bitmap>>()
+    val fixRequestPhotos: LiveData<ArrayList<Bitmap>>
+        get() = _fixRequestPhotos
+
     private val locationRepository = LocationRepository(application.applicationContext)
 
     private val disposable = CompositeDisposable()
@@ -64,9 +75,32 @@ class  HandilyViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun postFixRequest(fixRequest: FixRequest) {
-        FirestoreProvider.instance.addFixRequest(fixRequest)
+        FirestoreProvider.instance.addFixRequest(fixRequest, fixRequestPhotos.value) {
+            _fixRequestPhotos.value!!.clear()
+        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getFixPhotos(data: Intent?) {
+        // if multiple images are selected
+        val bitmaps = ArrayList<Bitmap>()
+        val clipData = data?.clipData
+        val singleData = data?.data
+        if (clipData != null) {
+            val count = clipData.itemCount
+            for (i in 0 until count) {
+                val imageUri: Uri = clipData.getItemAt(i).uri
+                val source = ImageDecoder.createSource(getApplication<Application>().contentResolver, imageUri)
+                bitmaps.add(ImageDecoder.decodeBitmap(source))
+            }
+        } else if (singleData != null) {
+            // if single image is selected
+            val imageUri: Uri = singleData
+            val source = ImageDecoder.createSource(getApplication<Application>().contentResolver, imageUri)
+            bitmaps.add(ImageDecoder.decodeBitmap(source))
+        }
+        _fixRequestPhotos.value = bitmaps
+    }
 
 
     fun getUserLocation() {
@@ -87,6 +121,8 @@ class  HandilyViewModel(application: Application): AndroidViewModel(application)
         )
 
     }
+
+
 
     override fun onCleared() {
         super.onCleared()

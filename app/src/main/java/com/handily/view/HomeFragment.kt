@@ -36,7 +36,7 @@ open class HomeFragment : Fragment() {
 
         binding.userFixRequestsList.layoutManager = GridLayoutManager(context, CARDS_IN_ROW, RecyclerView.VERTICAL, false)
         binding.userFixRequestsList.adapter = adapter
-        binding.userFixRequestsList.addItemDecoration(GridItemDecoration(this.requireContext(), R.dimen.padding))
+        binding.userFixRequestsList.addItemDecoration(GridItemDecoration(this.requireContext(), R.dimen.padding_4))
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.getOwnedFixRequests(viewModel.authenticatedUser.value?.uuid.toString())
