@@ -2,7 +2,7 @@ package com.handily.repository
 
 import android.graphics.Bitmap
 import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -13,8 +13,6 @@ import com.handily.model.FixRequestContract
 import com.handily.model.User
 import com.handily.model.UsersContract
 import java.io.ByteArrayOutputStream
-import java.net.URL
-import kotlin.system.exitProcess
 
 private const val TAG = "FirestoreProvider"
 
@@ -86,7 +84,22 @@ class FirestoreProvider private constructor(){
             }
     }
 
-
+    fun getFixRequests(location: LatLng, radius: Int, callback: (List<FixRequest>?) -> Unit) {
+        db.collection(FixRequestContract.COLLECTION_NAME)
+            .get()
+            .addOnSuccessListener { documents ->
+                val fixRequests : ArrayList<FixRequest> = ArrayList()
+                for (document in documents) {
+                    Log.d(TAG, "${document.id} => ${document.data}")
+                    fixRequests.add(document.toObject())
+                }
+                callback(fixRequests)
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "Listen failed.", it.cause)
+                callback(null)
+            }
+    }
 
     /**
     * Updates user with given uuid
