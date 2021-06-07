@@ -13,7 +13,7 @@ import com.handily.R
 import com.handily.databinding.FragmentHomeBinding
 import com.handily.util.GridItemDecoration
 
-private const val CARDS_IN_ROW = 3
+private const val CARDS_IN_ROW = 2
 
 class FindOrdersFragment : HomeFragment() {
 
@@ -55,10 +55,10 @@ class FindOrdersFragment : HomeFragment() {
         }
     }
 
-    //for tests :)
+    //for tests (Katowice) :)
     private fun setDummyLocation(){
-        if(viewModel.userLocation==null) {
-            viewModel.setLocation(LatLng(50.0, 50.0))
+        if(viewModel.userLocation.value==null) {
+            viewModel.setLocation(LatLng(50.25, 19.0))
         }
     }
 
