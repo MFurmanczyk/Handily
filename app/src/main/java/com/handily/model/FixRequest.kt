@@ -13,7 +13,7 @@ class FixRequest(
     val geoHash: String? = null,
     val name: String? = null,
     val description: String? = null,
-    val imagesUrls: List<String>? = null,
+    val imagesUrls: ArrayList<String>? = null,
     val userUuid: String? = null) {
 
         data class Builder(
@@ -22,7 +22,7 @@ class FixRequest(
             private var lat: Double? = null,
             private var lng: Double? = null,
             private var geoHash: String? = null,
-            private var imagesUrls: MutableList<String> = mutableListOf(),
+            private var imagesUrls: ArrayList<String> = arrayListOf(),
             private var userUuid: String? = null
         ) {
             fun lat(lat: Double) = apply { this.lat = lat }

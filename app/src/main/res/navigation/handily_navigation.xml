@@ -9,7 +9,11 @@
         android:id="@+id/fragment_home_tabs"
         tools:layout="@layout/fragment_home_tabs"
         android:label="fragment_home_tabs"
-        android:name="com.handily.view.FragmentHomeTabs"/>
+        android:name="com.handily.view.FragmentHomeTabs">
+        <action
+            android:id="@+id/fixOverviewFragmentDirection"
+            app:destination="@id/fixOverviewFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fixes_fragment"
         android:name="com.handily.view.FixesFragment"
@@ -36,4 +40,14 @@
         android:id="@+id/mapsFragment"
         android:name="com.handily.view.MapsFragment"
         android:label="MapsFragment" />
+    <fragment
+        android:id="@+id/fixOverviewFragment"
+        android:name="com.handily.view.FixOverviewFragment"
+        android:label="fragment_fix_overview"
+        tools:layout="@layout/fragment_fix_overview" >
+        <argument
+            android:name="uuid"
+            app:argType="string"
+            android:defaultValue="null" />
+    </fragment>
 </navigation>

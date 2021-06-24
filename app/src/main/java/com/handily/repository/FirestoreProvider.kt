@@ -86,6 +86,22 @@ class FirestoreProvider private constructor(){
             }
     }
 
+    fun getFixRequest(fixUuid: String, callback: (FixRequest?) -> Unit) {
+        var fixRequest: FixRequest? = null
+        db.collection(FixRequestContract.COLLECTION_NAME)
+            .document(fixUuid)
+            .get()
+            .addOnCompleteListener {
+                if(it.isSuccessful) {
+                    fixRequest = it.result.toObject<FixRequest>()
+                } else {
+                Log.w(TAG, "getFixRequest() failed.", it.exception?.cause)
+            }
+                callback(fixRequest)
+            }
+
+    }
+
 
 
     /**
