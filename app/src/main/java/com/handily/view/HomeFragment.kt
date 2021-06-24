@@ -17,13 +17,13 @@ private const val CARDS_IN_ROW = 2
 
 open class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    protected var _binding: FragmentHomeBinding? = null
+    protected val binding get() = _binding!!
 
-    private val viewModel : HandilyViewModel by activityViewModels()
+    protected val viewModel : HandilyViewModel by activityViewModels()
 
 
-    private val adapter = FixRequestCardRecyclerViewAdapter(arrayListOf())
+    protected val adapter = FixRequestCardRecyclerViewAdapter(arrayListOf())
 
 
     override fun onCreateView(
@@ -46,7 +46,7 @@ open class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun observeViewModel() {
+    protected open fun observeViewModel() {
         viewModel.authenticatedUser.observe(viewLifecycleOwner) {
             it?.let {
                 binding.user = it

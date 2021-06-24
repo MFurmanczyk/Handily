@@ -8,11 +8,9 @@ import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -25,7 +23,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.launch
 
 class  HandilyViewModel(application: Application): AndroidViewModel(application) {
 
@@ -44,6 +41,10 @@ class  HandilyViewModel(application: Application): AndroidViewModel(application)
     private val _fixRequestPhotos = MutableLiveData<ArrayList<Bitmap>>()
     val fixRequestPhotos: LiveData<ArrayList<Bitmap>>
         get() = _fixRequestPhotos
+
+    private val _fixRequests = MutableLiveData<List<FixRequest>>()
+    val fixRequest: LiveData<List<FixRequest>>
+        get() = _fixRequests
 
     private val locationRepository = LocationRepository(application.applicationContext)
 
@@ -66,8 +67,10 @@ class  HandilyViewModel(application: Application): AndroidViewModel(application)
         }
     }
 
-    fun getFixRequests(location: LatLng) {
-
+    fun getFixRequests(location: LatLng, radius: Int) {
+        FirestoreProvider.instance.getFixRequests(location, radius) {
+            _fixRequests.postValue(it)
+        }
     }
 
     fun getFixRequest(uuid: String): FixRequest? {

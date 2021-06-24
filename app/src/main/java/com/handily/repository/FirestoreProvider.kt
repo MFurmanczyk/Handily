@@ -2,7 +2,12 @@ package com.handily.repository
 
 import android.graphics.Bitmap
 import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestoreException
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -13,8 +18,7 @@ import com.handily.model.FixRequestContract
 import com.handily.model.User
 import com.handily.model.UsersContract
 import java.io.ByteArrayOutputStream
-import java.net.URL
-import kotlin.system.exitProcess
+
 
 private const val TAG = "FirestoreProvider"
 
@@ -102,7 +106,38 @@ class FirestoreProvider private constructor(){
 
     }
 
+    fun getFixRequests(location: LatLng, radius: Int, callback: (List<FixRequest>?) -> Unit) {
+        val center = GeoLocation(location.latitude, location.longitude)
+        val radiusInM = (radius * 1000).toDouble()
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
+        val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
+        for (b in bounds){
+            val q = db.collection(FixRequestContract.COLLECTION_NAME)
+                .orderBy("geoHash")
+                .startAt(b.startHash)
+                .endAt(b.endHash)
+            tasks.add(q.get())
+        }
 
+        Tasks.whenAllComplete(tasks)
+            .addOnCompleteListener {
+                val fixRequests: ArrayList<FixRequest> = ArrayList()
+                for (task in tasks) {
+                    val snap = task.result
+                    for (doc in snap.documents) {
+                        val lat = doc.getDouble("latitude")!!
+                        val lng = doc.getDouble("longitude")!!
+
+                        val docLocation = GeoLocation(lat, lng)
+                        val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
+                        if (distanceInM <= radiusInM) {
+                            fixRequests.add(doc.toObject()!!)
+                        }
+                    }
+                }
+                callback(fixRequests)
+            }
+    }
 
     /**
     * Updates user with given uuid
