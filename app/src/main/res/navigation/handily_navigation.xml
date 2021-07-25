@@ -50,4 +50,9 @@
             app:argType="string"
             android:defaultValue="null" />
     </fragment>
+    <fragment
+        android:id="@+id/makeOfferFragment"
+        android:name="com.handily.view.MakeOfferFragment"
+        android:label="fragment_make_offer"
+        tools:layout="@layout/fragment_make_offer" />
 </navigation>
