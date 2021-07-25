@@ -7,7 +7,7 @@
     tools:context=".view.UserDetailsActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment"
+        android:id="@+id/fragment_offer"
         android:name="com.handily.view.UserDetailsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"

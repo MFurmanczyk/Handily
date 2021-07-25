@@ -13,10 +13,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.handily.model.FixRequest
-import com.handily.model.FixRequestContract
-import com.handily.model.User
-import com.handily.model.UsersContract
+import com.handily.model.*
 import java.io.ByteArrayOutputStream
 
 
@@ -200,7 +197,24 @@ class FirestoreProvider private constructor(){
                 }
             }
         }
+    }
 
+    fun getFixOffers(fixUuid: String, callback: (List<FixOffer>?) -> Unit) {
+
+        db.collection(FixOfferContract.COLLECTION_NAME)
+            .whereEqualTo(FixOfferContract.Fields.FIX_UUID, fixUuid)
+            .get()
+            .addOnSuccessListener { documents ->
+                val fixOffers: ArrayList<FixOffer> = ArrayList()
+                for(document in documents) {
+                    fixOffers.add(document.toObject())
+                }
+                callback(fixOffers)
+            }
+            .addOnFailureListener {
+                Log.w(TAG, "Listen failed.", it.cause)
+                callback(null)
+            }
     }
 
     //Singleton pattern handling

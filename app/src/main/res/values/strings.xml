@@ -29,4 +29,6 @@
     <string name="radius">Radius</string>
     <string name="_0">0</string>
     <string name="radius_key">radius_key</string>
+    <string name="price_placeholder">150 zł</string>
+    <string name="user_placeholder">Jan Kowalski</string>
 </resources>
