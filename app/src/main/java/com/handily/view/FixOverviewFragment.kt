@@ -1,16 +1,12 @@
 package com.handily.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.handily.R
 import com.handily.databinding.FragmentFixOverviewBinding
-import com.handily.databinding.FragmentFixPhotoBinding
-import com.handily.util.getProgressDrawable
-import com.handily.util.loadImage
 import com.handily.viewmodel.FixOverviewViewModel
 
 class FixOverviewFragment : Fragment() {
