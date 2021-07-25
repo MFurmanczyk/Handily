@@ -18,6 +18,7 @@ private const val CARDS_IN_ROW = 2
 class FindOrdersFragment : HomeFragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
+    override val adapter = FixRequestCardRecyclerViewAdapter(arrayListOf(), false)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
