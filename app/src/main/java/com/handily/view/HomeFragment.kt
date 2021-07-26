@@ -23,7 +23,7 @@ open class HomeFragment : Fragment() {
     protected val viewModel : HandilyViewModel by activityViewModels()
 
 
-    protected val adapter = FixRequestCardRecyclerViewAdapter(arrayListOf(), true)
+    protected open val adapter = FixRequestCardRecyclerViewAdapter(arrayListOf(), true)
 
 
     override fun onCreateView(

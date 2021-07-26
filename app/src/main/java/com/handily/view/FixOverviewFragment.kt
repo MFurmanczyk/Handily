@@ -32,6 +32,15 @@ class FixOverviewFragment : Fragment() {
         binding.photosPager.adapter = FixPhotosPagerAdapter(this,
             arrayListOf())
 
+        childFragmentManager.commit {
+            val fragment =  if(isClient) AcceptOfferFragment(fixUuid) else MakeOfferFragment()
+            replace(R.id.fragment_offer, fragment)
+            setReorderingAllowed(true)
+            addToBackStack(null)
+        }
+
+        binding.fragmentOffer
+
         setupViewModel()
         return binding.root
     }
@@ -44,13 +53,7 @@ class FixOverviewFragment : Fragment() {
             isClient = FixOverviewFragmentArgs.fromBundle(it).isClient
         }
 
-        parentFragmentManager.commit {
-            val fragment =  if(isClient) AcceptOfferFragment(fixUuid) else MakeOfferFragment()
 
-            replace(R.id.fragment_offer, fragment)
-            setReorderingAllowed(true)
-            addToBackStack(null)
-        }
 
         viewModel.setFixRequest(fixUuid)
     }
