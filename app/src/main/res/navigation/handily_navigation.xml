@@ -49,6 +49,9 @@
             android:name="uuid"
             app:argType="string"
             android:defaultValue="null" />
+        <argument
+            android:name="isClient"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/makeOfferFragment"
