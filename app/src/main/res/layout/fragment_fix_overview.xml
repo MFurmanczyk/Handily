@@ -51,7 +51,6 @@
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/fragment_offer"
-                    android:name="com.handily.view.MakeOfferFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>

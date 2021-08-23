@@ -100,7 +100,6 @@ class FirestoreProvider private constructor(){
             }
                 callback(fixRequest)
             }
-
     }
 
     fun getFixRequests(location: LatLng, radius: Int, callback: (List<FixRequest>?) -> Unit) {

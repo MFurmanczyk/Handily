@@ -52,6 +52,9 @@
         <argument
             android:name="isClient"
             app:argType="boolean" />
+        <action
+            android:id="@+id/fixOverviewToHome"
+            app:destination="@id/fragment_home_tabs" />
     </fragment>
     <fragment
         android:id="@+id/makeOfferFragment"
