@@ -55,7 +55,7 @@ class FixOverviewFragment : Fragment() {
         }
 
         childFragmentManager.commit {
-            val fragment =  if(isClient) AcceptOfferFragment(fixUuid) else MakeOfferFragment()
+            val fragment =  if(isClient) AcceptOfferFragment(fixUuid) else MakeOfferFragment(fixUuid)
             add(R.id.fragment_offer, fragment)
             setReorderingAllowed(false)
             addToBackStack(null)

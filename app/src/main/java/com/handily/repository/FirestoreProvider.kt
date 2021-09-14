@@ -198,6 +198,10 @@ class FirestoreProvider private constructor(){
         }
     }
 
+    fun addFixOffers(fixOffer: FixOffer){
+        db.collection(FixOfferContract.COLLECTION_NAME).add(fixOffer)
+    }
+
     fun getFixOffers(fixUuid: String, callback: (List<FixOffer>?) -> Unit) {
 
         db.collection(FixOfferContract.COLLECTION_NAME)

@@ -20,4 +20,8 @@ class OfferViewModel(application: Application): AndroidViewModel(application) {
             _fixOfferList.value = it
         }
     }
+
+    fun addFixOffer(fixOffer: FixOffer){
+        FirestoreProvider.instance.addFixOffers(fixOffer)
+    }
 }
