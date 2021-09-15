@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.handily.databinding.FragmentAcceptOfferBinding
 import com.handily.viewmodel.OfferViewModel
 
@@ -24,10 +25,13 @@ class AcceptOfferFragment(private val fixUuid: String) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        setupViewModel()
         _binding = FragmentAcceptOfferBinding.inflate(inflater, container, false)
+        binding.offerList.layoutManager = LinearLayoutManager(requireContext())
         binding.offerList.adapter = adapter
 
         viewModel.setFixOfferList(fixUuid)
+
 
         return binding.root
     }
